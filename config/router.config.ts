@@ -39,6 +39,23 @@ export default [
         icon: 'dashboard',
       },
       {
+        path: '/web/product',
+        name: 'product',
+        icon: 'fund',
+        routes: [
+          {
+            path: '/web/product/circle',
+            name: 'circle',
+            component: './web/product/circle',
+          },
+          {
+            path: '/web/product/eventvariate',
+            name: 'eventvariate',
+            component: './web/product/eventvariate',
+          },
+        ],
+      },
+      {
         component: './404',
       },
     ],

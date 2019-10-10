@@ -35,13 +35,13 @@ const { Search } = Input;
 
 export interface HomeProps extends ConnectProps {
   form: FormComponentProps['form'];
-  projectList: ProjectType[];
+  projectList: IProjectType[];
   loading: boolean;
   dispatch: Dispatch;
 }
 
 interface HomeStates {
-  project: ProjectType;
+  project: IProjectType;
   visible: boolean;
 }
 
@@ -76,7 +76,7 @@ class Home extends React.Component<HomeProps, HomeStates> {
   handleOk = async () => {
     const { project } = this.state;
     const result = await addProjectDao(project);
-    if (result.code === 200) {
+    if (result && result.code === 200) {
       this.setState({
         visible: false,
       });
@@ -112,6 +112,26 @@ class Home extends React.Component<HomeProps, HomeStates> {
     });
   };
 
+  setProjectUrl = (e: any) => {
+    const { project } = this.state;
+    this.setState({
+      project: {
+        ...project,
+        url: e.target.value,
+      },
+    });
+  };
+
+  setProjectAppId = (e: any) => {
+    const { project } = this.state;
+    this.setState({
+      project: {
+        ...project,
+        app_id: e.target.value,
+      },
+    });
+  };
+
   render() {
     const { project } = this.state;
     const { projectList, loading } = this.props;
@@ -126,7 +146,7 @@ class Home extends React.Component<HomeProps, HomeStates> {
       </div>
     );
 
-    const ListContent = (props: { data: ProjectType }) => {
+    const ListContent = (props: { data: IProjectType }) => {
       const { project_name: projectName, type, token, is_use: isUse } = props.data;
       return (
         <div className={styles.listContent}>
@@ -233,6 +253,21 @@ class Home extends React.Component<HomeProps, HomeStates> {
               <Input value={project.project_name} onChange={this.setProjectName} />
             </Col>
           </Row>
+          {project.type === 'web' ? (
+            <Row className={styles.row}>
+              <Col span={4}>应用url：</Col>
+              <Col span={18}>
+                <Input value={project.url} onChange={this.setProjectUrl} />
+              </Col>
+            </Row>
+          ) : (
+            <Row className={styles.row}>
+              <Col span={4}>应用appId：</Col>
+              <Col span={18}>
+                <Input value={project.app_id} onChange={this.setProjectAppId} />
+              </Col>
+            </Row>
+          )}
         </Modal>
       </div>
     );
